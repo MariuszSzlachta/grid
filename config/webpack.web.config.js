@@ -1,11 +1,12 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { aliases } = require("./webpack.aliases");
 
 const APP_DIR = path.resolve(__dirname, "../src");
 const PUBLIC = path.resolve(__dirname, "../public");
 
-console.log(APP_DIR)
+console.log(APP_DIR);
 
 module.exports = env => {
     const { ENVIRONMENT, VERSION } = env;
@@ -13,20 +14,20 @@ module.exports = env => {
         target: "web",
         entry: {
             polyfills: "@babel/polyfill",
-            app: `${APP_DIR}/App.jsx`,
+            app: `${APP_DIR}/App.jsx`
         },
         output: {
             path: `${PUBLIC}/`,
             filename: "[name].bundle.js",
             crossOriginLoading: "anonymous",
-            publicPath: `/`
+            publicPath: "/"
         },
         devtool: "source-map",
         devServer: {
             host: "localhost",
             historyApiFallback: true,
-            open: false,
-            hot:true
+            open: true,
+            hot: true
         },
         module: {
             rules: [
@@ -55,13 +56,14 @@ module.exports = env => {
                 {
                     test: /.(png|woff(2)?|eot|ttf|svg|gif)([?a-z0-9=.]+)?$/,
                     use: [{
-                        loader: 'url-loader?limit=10000'
+                        loader: "url-loader?limit=10000"
                     }]
                 }
             ]
         },
         resolve: {
             extensions: [".js", ".jsx"],
+            alias: { ...aliases }
         },
         plugins: [
             new webpack.DefinePlugin({
@@ -77,5 +79,5 @@ module.exports = env => {
                 filename: "index.html"
             })
         ]
-    }
+    };
 };

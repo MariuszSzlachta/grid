@@ -1,22 +1,30 @@
-import React, {useState} from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import axios from "axios";
-const App = () => {
-    const [data, setData] = useState(null);
-    const baseUrl = "http://localhost:9000";
+// import DataProvider from "Containers/dataProvider/DataProvider";
+import Grid from "Containers/grid/Grid";
 
-    const getList = async () => {
-        const { data } = await axios.get(baseUrl+"/testAPI");
-        setData(data);
-    };
+const stub = [
+    {
+        id: 205,
+        name: "Kohler, Runolfsdottir and Kuhlman",
+        city: "Prosaccomouth"
+    },
+    {
+        id: 6,
+        name: "Jacobson, Bashirian and Ortiz",
+        city: "Lake Jay"
+    },
+    {
+        id: 91,
+        name: "Borer and Sons",
+        city: "Mrazmouth"
+    }
+];
 
-    return (
-        <>
-            <button onClick={getList}>get</button>
-            <div>Hello world!</div>
-            <div>{`this is data: ${data}`}</div>
-        </>
-    );
-};
+const App = () => (
+    <>
+        <Grid data={stub} />
+    </>
+);
 
 ReactDOM.render(<App />, document.getElementById("app"));

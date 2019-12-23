@@ -1,0 +1,13 @@
+.grid-header {
+  padding: 10px;
+  border: 1px solid black;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
