@@ -1,0 +1,15 @@
+.grid-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $grey200;
+  border-left: 1px solid $grey200;
+  margin: 0 auto;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 15px;
+
+  &--scrolled {
+    padding-right: 0;
+  }
+}

@@ -1,0 +1,15 @@
+.grid-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $grey200;
+  }
+
+  &:nth-child(even) {
+    background-color: $white;
+  }
+}

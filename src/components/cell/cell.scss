@@ -1,9 +1,8 @@
-.grid {
+.grid-cell {
   display: flex;
-  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  padding: $padding;
+  border-right: 1px solid $grey200;
 }

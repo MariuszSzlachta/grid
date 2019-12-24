@@ -1,29 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import DataProvider from "Containers/dataProvider/DataProvider";
+import DataProvider from "Containers/dataProvider/DataProvider";
 import Grid from "Containers/grid/Grid";
 
-const stub = [
-    {
-        id: 205,
-        name: "Kohler, Runolfsdottir and Kuhlman",
-        city: "Prosaccomouth"
-    },
-    {
-        id: 6,
-        name: "Jacobson, Bashirian and Ortiz",
-        city: "Lake Jay"
-    },
-    {
-        id: 91,
-        name: "Borer and Sons",
-        city: "Mrazmouth"
-    }
-];
+import "./styles/index.scss";
 
 const App = () => (
     <>
-        <Grid data={stub} />
+        <DataProvider>
+            {companies => (
+                <Grid data={companies.slice(280)} />
+            )}
+        </DataProvider>
     </>
 );
 

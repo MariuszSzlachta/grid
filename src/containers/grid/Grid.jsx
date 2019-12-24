@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { SORT_ORDERS } from "Common/Enums";
 import { isNextItemExists } from "Common/arrayUtils";
 import { SortStrategy } from "Common/SortStrategy";
-import GridHeader from "Components/gridHeader/GridHeader";
+import GridBody from "Components/body/Body";
+import GridHeader from "Components/header/Header";
 import { columnProvider } from "Common/columnProvider";
 import _ from "lodash";
 
@@ -17,14 +18,13 @@ const Grid = ({ data }) => {
         order: _.first(Object.values(SORT_ORDERS))
     });
 
-    const handleSort = sortParameters => {
+    const handleSort = useCallback(sortParameters => {
         const dataToSort = [...data];
         const sorted = new SortStrategy(dataToSort, sortParameters).sort();
-        console.log("sorted", sorted);
-        // posortuj tylko SRP
+
         setSortedData(sorted);
         setGridColumns(columnProvider(sorted));
-    };
+    }, [data]);
 
     const getSortParameters = columnName => {
         const sortOrdersList = Object.values(SORT_ORDERS);
@@ -50,15 +50,19 @@ const Grid = ({ data }) => {
         handleSort(sortParameters);
     };
 
-
     useEffect(() => {
         setGridColumns(columnProvider(data));
-    }, [data]);
+        handleSort(currentSortParameters);
+    }, [currentSortParameters, data, handleSort]);
 
     return (
         <table className="grid">
             {gridColumns && (
-                <GridHeader columns={gridColumns} onColumnSelect={onColumnSelect} />
+                <GridHeader columns={gridColumns} currentSortParameters={currentSortParameters} onColumnSelect={onColumnSelect} />
+            )}
+
+            {gridColumns && (
+                <GridBody data={sortedData} />
             )}
         </table>
     );

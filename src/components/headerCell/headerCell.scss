@@ -1,0 +1,13 @@
+.grid-header-cell {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: $padding;
+  border-right: 1px solid $grey200;
+
+  &__name {
+    margin-right: 0.5rem;
+    color: $text-primary;
+  }
+}

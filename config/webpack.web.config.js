@@ -48,9 +48,18 @@ module.exports = env => {
                 {
                     test: /\.scss$|\.sass$/,
                     use: [
-                        ENVIRONMENT === "production" ? MiniCssExtractPlugin.loader : "style-loader",
+                        "style-loader",
                         "css-loader",
-                        "sass-loader"
+                        "sass-loader",
+                        {
+                            loader: "sass-resources-loader",
+                            options: {
+                                resources: [
+                                    `${APP_DIR}/styles/variables.scss`,
+                                    `${APP_DIR}/styles/mixins.scss`
+                                ]
+                            }
+                        }
                     ]
                 },
                 {
