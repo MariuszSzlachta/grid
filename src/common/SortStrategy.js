@@ -1,6 +1,6 @@
 import { SORT_ORDERS } from "Common/Enums";
+import _ from "lodash";
 
-const _initialData = Symbol();
 const _data = Symbol();
 const _column = Symbol();
 const _order = Symbol();
@@ -9,27 +9,25 @@ const _sortDescending = Symbol();
 
 export class SortStrategy {
     constructor(data, { column, order }) {
-        console.log("constructo", data);
-        this[_initialData] = data;
         this[_data] = data;
         this[_column] = column;
         this[_order] = order;
     }
 
     [_sortAscending](a, b) {
-        if (a[this[_column]] === b[this[_column]]) {
-            return 0;
-        }
-
-        if (typeof a[this[_column]] === typeof b[this[_column]]) {
+        if (_.isString(a[this[_column]]) && _.isString(b[this[_column]])) {
             return a[this[_column]] < b[this[_column]] ? -1 : 1;
         }
 
-        return typeof a[this[_column]] < typeof b[this[_column]] ? -1 : 1;
+        return a[this[_column]] - b[this[_column]];
     }
 
     [_sortDescending](a, b) {
-        return Array.from(this[_sortAscending](a, b)).reverse();
+        if (_.isString(a[this[_column]]) && _.isString(b[this[_column]])) {
+            return a[this[_column]] < b[this[_column]] ? 1 : -1;
+        }
+
+        return b[this[_column]] - a[this[_column]];
     }
 
 
@@ -43,8 +41,7 @@ export class SortStrategy {
 
             case SORT_ORDERS.NONE:
             default:
-                console.log("data", this[_initialData]);
-                return this[_initialData];
+                return this[_data];
         }
     }
 }

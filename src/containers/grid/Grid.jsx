@@ -10,7 +10,6 @@ import _ from "lodash";
 import "./grid.scss";
 
 const Grid = ({ data }) => {
-    console.log("initialState", data);
     const [gridColumns, setGridColumns] = useState(null);
     const [sortedData, setSortedData] = useState(null);
     const [currentSortParameters, setCurrentSortParameters] = useState({
@@ -18,13 +17,11 @@ const Grid = ({ data }) => {
         order: _.first(Object.values(SORT_ORDERS))
     });
 
-    const isSameColumnClicked = columnClicked => columnClicked === currentSortParameters.column;
-
     const handleSort = sortParameters => {
-        const sorted = new SortStrategy(data, sortParameters).sort();
-
-        // posortuj tylko SRP
+        const dataToSort = [...data];
+        const sorted = new SortStrategy(dataToSort, sortParameters).sort();
         console.log("sorted", sorted);
+        // posortuj tylko SRP
         setSortedData(sorted);
         setGridColumns(columnProvider(sorted));
     };
@@ -40,7 +37,6 @@ const Grid = ({ data }) => {
             });
         }
 
-
         return ({
             column: columnName,
             order: _.first(sortOrdersList)
@@ -49,7 +45,6 @@ const Grid = ({ data }) => {
 
     const onColumnSelect = (selectedColumn, currentSortOrder) => {
         const sortParameters = getSortParameters(selectedColumn, currentSortOrder);
-        console.log("sortParameters", sortParameters);
 
         setCurrentSortParameters(sortParameters);
         handleSort(sortParameters);
