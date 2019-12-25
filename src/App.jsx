@@ -8,8 +8,8 @@ import "./styles/index.scss";
 const App = () => (
     <>
         <DataProvider>
-            {companies => (
-                <Grid data={companies.slice(280)} />
+            {dataToShow => (
+                <Grid data={dataToShow} />
             )}
         </DataProvider>
     </>

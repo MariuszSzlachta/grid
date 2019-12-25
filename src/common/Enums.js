@@ -5,3 +5,5 @@ export const SORT_ORDERS = {
 };
 
 export const DEFAULT_GRID_BODY_HEIGHT = 600;
+
+export const ALL_RECORDS_MARK = "*";
