@@ -1,36 +1,21 @@
+import { MONTH_BEGINNING_FORMAT } from "Common/Enums";
 import PropTypes from "prop-types";
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import _ from "lodash";
-import { ALL_RECORDS_MARK } from "Common/Enums";
 import { COMPANIES_URL, INCOMES_URL } from "Common/Urls";
+import moment from "moment";
 
 
-const DataProvider = ({ children }) => {
-    const [companies, setCompanies] = useState(null);
-    const [fetchedIncomesForDisplayedData, setFetchedIncomesForDisplayedData] = useState(null);
-    // paginacja
-    const [pages, setPages] = useState([]);
-    const [dataToShow, setDataToShow] = useState(null);
-    const [offset, setOffset] = useState(null);
-    const [itemsPerPage, setItemsPerPage] = useState(20);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [pageCount, setPageCount] = useState(null);
-    //
-
-    const createPages = useCallback(data => {
-        if (itemsPerPage === ALL_RECORDS_MARK) {
-            const slicedData = _.chunk(data, data && data.length);
-            return setPages(slicedData);
-        }
-
-        const slicedData = _.chunk(data, itemsPerPage);
-        return setPages(slicedData);
-    }, [itemsPerPage]);
+const DataProvider = ({
+    children
+}) => {
+    const [fetchedCompanies, setFetchedCompanies] = useState(null);
+    const [fetchedIncomesForCompanies, setFetchedIncomesForCompanies] = useState(null);
+    const [data, setData] = useState(null);
 
     const fetchCompanies = async () => {
-        const fetchedCompanies = await axios.get(COMPANIES_URL);
-        setCompanies(fetchedCompanies.data);
+        const companies = await axios.get(COMPANIES_URL);
+        setFetchedCompanies(companies.data);
     };
 
     const fetchIncome = async id => {
@@ -39,54 +24,77 @@ const DataProvider = ({ children }) => {
         return data;
     };
 
-    const getIncomesForDisplayedData = useCallback(async companiesList => {
-        const fetchedIncomes = await Promise.all(companiesList.map(({ id }) => fetchIncome(id))).then(values => values);
-        setFetchedIncomesForDisplayedData(fetchedIncomes);
-    }, []);
+    const fetchIncomesForCompanies = useCallback(async () => {
+        const fetchedIncomes = await Promise.all(fetchedCompanies.map(({ id }) => fetchIncome(id))).then(values => values);
+        setFetchedIncomesForCompanies(fetchedIncomes);
+    }, [fetchedCompanies]);
 
-    const setPreviousPage = () => {
-        if (currentPage < pageCount) {
-            const incrementedPage = currentPage + 1;
-            setCurrentPage(incrementedPage);
+
+    const getIncomesForCurrentCompany = useCallback(companyId => {
+        const { incomes: incomesForCurrentCompany } = fetchedIncomesForCompanies.find(income => income.id === companyId);
+        return incomesForCurrentCompany;
+    }, [fetchedIncomesForCompanies]);
+
+    const getIncomesListSize = useCallback(companyId => (
+        getIncomesForCurrentCompany(companyId).length
+    ), [getIncomesForCurrentCompany]);
+
+    const calculateTotalIncome = useCallback(companyId => {
+        const incomesForCurrentCompany = getIncomesForCurrentCompany(companyId);
+        const totalIncomeForCurrentCompany = incomesForCurrentCompany
+            .map(el => el.value)
+            .reduce((prev, current) => parseFloat(prev) + parseFloat(current), 0);
+
+        return totalIncomeForCurrentCompany.toFixed(2);
+    }, [getIncomesForCurrentCompany]);
+
+    const calculateAverageIncome = useCallback(companyId => (
+        calculateTotalIncome(companyId) / getIncomesListSize(companyId)
+    ).toFixed(2), [calculateTotalIncome, getIncomesListSize]);
+
+    const calculateLastMonthIncome = useCallback(companyId => {
+        const monthBeginning = moment().format(MONTH_BEGINNING_FORMAT);
+
+        const lastMonthIncome = getIncomesForCurrentCompany(companyId)
+            .filter(income => moment(income.date).isSameOrAfter(monthBeginning))
+            .map(el => el.value)
+            .reduce((prev, current) => parseFloat(prev) + parseFloat(current), 0);
+
+        return lastMonthIncome.toFixed(2);
+    }, [getIncomesForCurrentCompany]);
+
+    const mergeData = useCallback(() => {
+        const mergedData = fetchedCompanies.map(company => ({
+            ...company,
+            totalIncome: calculateTotalIncome(company.id),
+            lastMonthIncome: calculateLastMonthIncome(company.id),
+            averageIncome: calculateAverageIncome(company.id)
+        }));
+
+        setData(mergedData);
+    }, [calculateAverageIncome, calculateLastMonthIncome, calculateTotalIncome, fetchedCompanies]);
+
+    useEffect(() => {
+        if (fetchedIncomesForCompanies) {
+            mergeData();
         }
-    };
-
-    const setNextPage = () => {
-        if (currentPage !== 0) {
-            const decrementedPage = currentPage - 1;
-            setCurrentPage(decrementedPage);
-        }
-    };
-
-    const setFirstPage = () => {
-        setCurrentPage(0);
-    };
-
-    const setLastPage = () => {
-        setCurrentPage(pageCount);
-    };
-
+    }, [fetchedIncomesForCompanies, mergeData]);
 
     useEffect(() => {
         fetchCompanies();
     }, []);
 
     useEffect(() => {
-        getIncomesForDisplayedData(dataToShow);
-    }, [dataToShow, getIncomesForDisplayedData]);
+        if (fetchedCompanies) {
+            fetchIncomesForCompanies();
+        }
+    }, [fetchIncomesForCompanies, fetchedCompanies]);
 
-    useEffect(() => {
-        createPages(companies);
-    }, [companies, createPages, itemsPerPage]);
-
-    useEffect(() => {
-        setPageCount(pages.length);
-        setDataToShow(pages[currentPage]);
-    }, [currentPage, pages]);
-
-    if (dataToShow) {
+    if (data) {
         return (
-            children(dataToShow)
+            children(
+                data
+            )
         );
     }
 

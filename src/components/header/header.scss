@@ -2,13 +2,20 @@
   padding-right: 15px;
   border: 1px solid $grey200;
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   background-color: $white;
 
   &__row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 860px) {
+  .grid-header__row {
+    height: 100%;
+    flex-direction: column;
   }
 }

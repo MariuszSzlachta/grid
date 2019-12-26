@@ -1,0 +1,12 @@
+.sorting-indicator {
+  width: 0.5rem;
+  height: auto;
+
+  &--asc {
+    transform: rotate(90deg);
+  }
+
+  &--desc {
+    transform: rotate(-90deg);
+  }
+}

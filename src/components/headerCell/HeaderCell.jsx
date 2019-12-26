@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { SORT_ORDERS } from "Common/Enums";
+import SortingIndicator from "Components/sortingIndicator/SortingIndicator";
 
 import "./headerCell.scss";
 
@@ -20,9 +21,9 @@ const HeaderCell = ({
             onClick={() => onClick(name, defaultSortOrder)}
         >
             <span className="grid-header-cell__name">
-                {name}
+                {name.split(/(?=[A-Z])/).map(word => word.toLowerCase()).join(" ")}
             </span>
-            <span className="grid-header-cell__icon">{sortOrder}</span>
+            <SortingIndicator value={sortOrder} />
         </th>
     );
 };

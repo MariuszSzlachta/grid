@@ -1,0 +1,27 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 60px;
+  margin: 0 auto;
+  padding: $padding;
+  border: 1px solid $grey200;
+}
+
+.pagination-items-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@media (max-width: 860px) {
+  .pagination {
+    position: sticky;
+    bottom: 0;
+    background: #ffffff;
+  }
+}

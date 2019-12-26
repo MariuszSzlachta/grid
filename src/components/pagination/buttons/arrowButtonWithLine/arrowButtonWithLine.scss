@@ -1,0 +1,21 @@
+.arrow-button-with-line {
+  background: none;
+  border: 1px solid $grey200;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+
+  &:disabled {
+    background: $grey200;
+  }
+}
+
+.arrow-with-line {
+  width: 10px;
+  height: auto;
+  color: $grey400;
+
+  &--end {
+    transform: rotate(180deg);
+  }
+}

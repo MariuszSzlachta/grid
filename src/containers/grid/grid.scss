@@ -4,6 +4,12 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
+}
+
+@media (max-width: 860px) {
+  .grid {
+    position: sticky;
+  }
 }
