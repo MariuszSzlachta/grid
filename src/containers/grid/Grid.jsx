@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import GridBody from "Components/body/Body";
 import GridHeader from "Components/header/Header";
+import Input from "Components/input/Input";
 
 import withSort from "App/HOC/withSort/withSort";
 
@@ -12,17 +14,42 @@ const Grid = ({
     gridColumns,
     currentSortParameters,
     onColumnSelect
-}) => (
-    <table className="grid">
-        <GridHeader
-            columns={gridColumns}
-            currentSortParameters={currentSortParameters}
-            onColumnSelect={onColumnSelect}
-        />
+}) => {
+    const [filteredData, setFilteredData] = useState(null);
+    const [isDataFiltered, toggleIsDataFiltered] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
+    const handleFilter = value => {
+        setSearchValue(value);
+        toggleIsDataFiltered(!_.isEmpty(value));
+        const filtered = data.filter(row => Object.values(row).some(cell => String(cell).includes(value)));
+        setFilteredData(filtered);
+    };
 
-        <GridBody data={data} />
-    </table>
-);
+    const onDataChanged = useCallback(() => {
+        setFilteredData(null);
+        toggleIsDataFiltered(false);
+        setSearchValue("");
+    }, []);
+
+    useEffect(() => {
+        onDataChanged();
+    }, [data, onDataChanged]);
+
+    return (
+        <div className="grid-wrapper">
+            <Input onValueChange={handleFilter} value={searchValue} />
+            <table className="grid">
+                <GridHeader
+                    columns={gridColumns}
+                    currentSortParameters={currentSortParameters}
+                    onColumnSelect={onColumnSelect}
+                />
+
+                <GridBody data={isDataFiltered ? filteredData : data} />
+            </table>
+        </div>
+    );
+};
 
 Grid.propTypes = {
     currentSortParameters: PropTypes.instanceOf(Object).isRequired,

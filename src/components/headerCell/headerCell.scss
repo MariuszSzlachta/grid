@@ -7,6 +7,9 @@
   border-right: 1px solid $grey200;
   cursor: pointer;
 
+  ::selection { background: transparent; }
+  ::-moz-selection { background: transparent; }
+
   &__name {
     margin-right: 0.5rem;
     color: $text-primary;

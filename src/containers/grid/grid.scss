@@ -1,4 +1,5 @@
-.grid {
+.grid,
+.grid-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -8,7 +9,21 @@
   margin: 0 auto;
 }
 
+.grid-wrapper {
+  margin-top: 1rem;
+  padding: 0;
+}
+
+.grid {
+  border-bottom: 1px solid $grey200;
+}
+
 @media (max-width: 860px) {
+  .grid-wrapper {
+    padding: 1rem 0.5rem;
+
+  }
+
   .grid {
     position: sticky;
   }

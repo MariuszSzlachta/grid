@@ -1,10 +1,10 @@
 .grid-header {
   padding-right: 15px;
-  border: 1px solid $grey200;
+  border: 1px solid $white;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: $white;
+  background-color: $grey200;
 
   &__row {
     display: flex;

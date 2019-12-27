@@ -5,6 +5,8 @@ import axios from "axios";
 import { COMPANIES_URL, INCOMES_URL } from "Common/Urls";
 import moment from "moment";
 
+import Loader from "Components/loader/Loader";
+
 
 const DataProvider = ({
     children
@@ -98,7 +100,7 @@ const DataProvider = ({
         );
     }
 
-    return <div>loading...</div>;
+    return <Loader />;
 };
 
 DataProvider.propTypes = {
