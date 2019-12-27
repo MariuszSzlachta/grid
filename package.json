@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --mode=development --config=config/webpack.dev.config.js --env.ENVIRONMENT=local --env.VERSION=stag",
     "build": "webpack --mode=production --config config/webpack.prod.config.js --env.ENVIRONMENT=production --env.VERSION=stag --progress",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d public"
   },
   "author": "Mariusz Szlachta",
   "license": "ISC",
