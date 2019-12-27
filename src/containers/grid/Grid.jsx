@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import GridBody from "Components/body/Body";
+import GridBody from "Containers/gridBody/GridBody";
 import GridHeader from "Components/header/Header";
 import Input from "Components/input/Input";
 
@@ -18,6 +18,7 @@ const Grid = ({
     const [filteredData, setFilteredData] = useState(null);
     const [isDataFiltered, toggleIsDataFiltered] = useState(false);
     const [searchValue, setSearchValue] = useState("");
+
     const handleFilter = value => {
         setSearchValue(value);
         toggleIsDataFiltered(!_.isEmpty(value));

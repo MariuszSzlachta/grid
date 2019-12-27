@@ -15,6 +15,7 @@ const HeaderCell = ({
     onClick
 }) => {
     const sortOrder = name === column ? order : defaultSortOrder;
+
     return (
         <th
             className="grid-header-cell"

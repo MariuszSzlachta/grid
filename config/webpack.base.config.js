@@ -46,8 +46,7 @@ module.exports = env => {
                             loader: "sass-resources-loader",
                             options: {
                                 resources: [
-                                    `${APP_DIR}/styles/variables.scss`,
-                                    `${APP_DIR}/styles/mixins.scss`
+                                    `${APP_DIR}/styles/variables.scss`
                                 ]
                             }
                         }

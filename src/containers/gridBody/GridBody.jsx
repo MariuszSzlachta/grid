@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import { DEFAULT_GRID_BODY_HEIGHT } from "Common/Enums";
-import GridRow from "App/components/gridRow/GridRow";
+import GridRow from "Components/gridRow/GridRow";
 
-import "./body.scss";
+import "Containers/gridBody/gridBody.scss";
 
-const Body = ({ data }) => {
+const GridBody = ({ data }) => {
     const [classNameModifier, setClassNameModifier] = useState("");
     const bodyRef = useRef(null);
 
@@ -39,8 +39,8 @@ const Body = ({ data }) => {
     );
 };
 
-Body.propTypes = {
+GridBody.propTypes = {
     data: PropTypes.instanceOf(Array).isRequired
 };
 
-export default Body;
+export default GridBody;
