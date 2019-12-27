@@ -1,12 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { aliases } = require("./webpack.aliases");
 
 const APP_DIR = path.resolve(__dirname, "../src");
 const PUBLIC = path.resolve(__dirname, "../public");
-
-console.log(APP_DIR);
 
 module.exports = env => {
     const { ENVIRONMENT, VERSION } = env;
@@ -23,12 +20,6 @@ module.exports = env => {
             publicPath: "/"
         },
         devtool: "source-map",
-        devServer: {
-            host: "localhost",
-            historyApiFallback: true,
-            open: true,
-            hot: true
-        },
         module: {
             rules: [
                 {
@@ -82,11 +73,7 @@ module.exports = env => {
             new webpack.LoaderOptionsPlugin({
                 debug: true
             }),
-            new webpack.ProgressPlugin(),
-            new HtmlWebpackPlugin({
-                template: `${PUBLIC}/template.html`,
-                filename: "index.html"
-            })
+            new webpack.ProgressPlugin()
         ]
     };
 };
